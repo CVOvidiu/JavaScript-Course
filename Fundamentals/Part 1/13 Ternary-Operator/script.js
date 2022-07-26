@@ -1,0 +1,1 @@
+const population = 10 >= 33 ? console.log("Romania's population is above average") : console.log("Romania's population is below average");
