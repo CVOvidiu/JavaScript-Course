@@ -1,0 +1,2 @@
+const percentageOfWorld = population => (population / 7900) * 100;
+const string = (country, population) => `${country} has ${population} million people, which is about ${percentageOfWorld}% of the world.`;
