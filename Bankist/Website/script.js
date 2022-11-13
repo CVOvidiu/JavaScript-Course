@@ -29,3 +29,18 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+// Smooth scrolling
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', (e) => {
+  // Scrolling to section1
+  const s1coords = section1.getBoundingClientRect();
+  window.scrollTo({
+    left: s1coords.left,
+    top: s1coords.top + window.pageYOffset,
+    behavior: 'smooth',
+  });
+})
