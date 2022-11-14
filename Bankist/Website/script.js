@@ -136,3 +136,30 @@ allSections.forEach(s => {
   sectionObs.observe(s);
   s.classList.add('section--hidden');
 });
+
+// Lazy loading images
+
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = (entries, observer) => {
+  const [entry] = entries;
+
+  if(!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+
+  // We cannot remove the blur filter right now. If bad internet, the blur will get removed but the image is not still loaded, so we need to know when the image is loaded
+
+  entry.target.addEventListener('load', () => {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+})
+
+imgTargets.forEach(img => imgObserver.observe(img));
