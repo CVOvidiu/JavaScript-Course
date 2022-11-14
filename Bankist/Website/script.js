@@ -55,3 +55,23 @@ document.querySelector('.nav__links').addEventListener('click', (e) => {
     document.querySelector(id).scrollIntoView({behavior: 'smooth'});
   }
 })
+
+// Tabbed component
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', (e) => {
+  const clicked = e.target.closest('.operations__tab'); // get only the tab (spans are present inside the tab -> we get the parent that has the class)
+  if(!clicked) return; // Guard clause: for clicking 'tabsContainer'; don't continue the execution of this function
+
+  // Change active tab
+  tabs.forEach((tab) => tab.classList.remove('operations__tab--active'));
+
+  clicked.classList.add('operations__tab--active');
+
+  // Change active content
+  tabsContent.forEach((content) => content.classList.remove('operations__content--active'));
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
+});
