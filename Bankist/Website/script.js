@@ -75,3 +75,23 @@ tabsContainer.addEventListener('click', (e) => {
   tabsContent.forEach((content) => content.classList.remove('operations__content--active'));
   document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
 });
+
+// Nav links hover animation
+
+const nav = document.querySelector('.nav');
+
+const hoverHandler = function (e) {
+  if(e.target.classList.contains('nav__link')) {
+    const activeLink = e.target;
+    const siblings = nav.querySelectorAll('.nav__link');
+    const logo = nav.querySelector('.nav__logo');
+
+    siblings.forEach(s => {
+      if(s !== activeLink) s.style.opacity = this;
+    })
+    logo.style.opacity = this;
+  }
+}
+
+nav.addEventListener('mouseover', hoverHandler.bind(0.5));
+nav.addEventListener('mouseout', hoverHandler.bind(1));
