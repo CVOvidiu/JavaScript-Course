@@ -11,6 +11,8 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
+let map, mapEvent;
+
 // Get current position coordinates using GeolocationAPI
 if (navigator.geolocation)
   navigator.geolocation.getCurrentPosition(
@@ -20,7 +22,7 @@ if (navigator.geolocation)
       console.log(latitude, longitude);
 
       // Leaflet
-      const map = L.map('map').setView([latitude, longitude], 13);
+      map = L.map('map').setView([latitude, longitude], 13);
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution:
@@ -28,21 +30,9 @@ if (navigator.geolocation)
       }).addTo(map);
 
       map.on('click', event => {
-        const { lat, lng } = event.latlng;
-
-        L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup(
-            L.popup({
-              maxWidth: 250,
-              minWidth: 100,
-              autoClose: false,
-              closeOnClick: false,
-              className: 'running-popup',
-            })
-          )
-          .setPopupContent('Workout')
-          .openPopup();
+        mapEvent = event;
+        form.classList.remove('hidden');
+        inputDistance.focus();
       });
     },
     () => {
@@ -50,3 +40,33 @@ if (navigator.geolocation)
       alert(`Couldn't get position`);
     }
   );
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  inputDistance.value =
+    inputDuration.value =
+    inputCadence.value =
+    inputElevation.value =
+      '';
+
+  const { lat, lng } = mapEvent.latlng;
+  L.marker([lat, lng])
+    .addTo(map)
+    .bindPopup(
+      L.popup({
+        maxWidth: 250,
+        minWidth: 100,
+        autoClose: false,
+        closeOnClick: false,
+        className: 'running-popup',
+      })
+    )
+    .setPopupContent('Workout')
+    .openPopup();
+});
+
+inputType.addEventListener('change', () => {
+  inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+  inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+});
